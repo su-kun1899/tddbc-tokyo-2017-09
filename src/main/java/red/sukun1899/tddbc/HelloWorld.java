@@ -5,6 +5,6 @@ package red.sukun1899.tddbc;
  */
 public class HelloWorld {
     public String hello() {
-        return "Hello, World";
+        return "Hello, world!!";
     }
 }
