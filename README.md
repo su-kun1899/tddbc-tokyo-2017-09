@@ -8,7 +8,7 @@
 
 ビルドはMavenで行います。
 
-## How to run/test
+## How to run / test
 
 ```
 ./mvnw clean test
