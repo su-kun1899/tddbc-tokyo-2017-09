@@ -88,20 +88,17 @@ class SemanticVersioningSpec extends Specification {
         null                | _
     }
 
-    def 'パッチのバージョンをアップする'() {
-        given:
-        def semanticVersioning = new SemanticVersioning(major, minor, patch)
-
+    def '#semanticVersioning.getVersion()のパッチバージョンをアップすると#expectedになる'() {
         when:
-        semanticVersioning.incrementPatch()
+        semanticVersioning."$method"()
 
         then:
         semanticVersioning.getVersion() == expected
 
         where:
-        major | minor | patch || expected
-        1     | 4     | 2     || '1.4.3'
-        1     | 4     | 0     || '1.4.1'
-        1     | 4     | 9     || '1.4.10'
+        method           | semanticVersioning              | label       || expected
+        "incrementPatch" | new SemanticVersioning(1, 4, 2) | 'パッチアップデート' || '1.4.3'
+        "incrementPatch" | new SemanticVersioning(1, 4, 0) | 'パッチアップデート' || '1.4.1'
+        "incrementPatch" | new SemanticVersioning(1, 4, 9) | 'パッチアップデート' || '1.4.10'
     }
 }
