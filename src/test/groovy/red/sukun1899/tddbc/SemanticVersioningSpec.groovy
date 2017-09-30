@@ -38,6 +38,9 @@ class SemanticVersioningSpec extends Specification {
         semanticVersioning1             | semanticVersioning2             || expected | label
         new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 2) || true     | '等しい'
         new SemanticVersioning(1, 4, 2) | new SemanticVersioning(2, 0, 9)|| false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 3)|| false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 0, 2)|| false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(99, 4, 2)|| false    | '等しくない'
     }
 
     def '同一インスタンスは等価であること'() {
@@ -49,4 +52,15 @@ class SemanticVersioningSpec extends Specification {
         semanticVersioning1.equals(semanticVersioning2)
     }
 
+    def '異なるクラスで比較した場合は等価でないこと'() {
+        def semanticVersioning1 = new SemanticVersioning(1,4,2)
+
+        expect:
+        !semanticVersioning1.equals(semanticVersioning2)
+
+        where:
+        semanticVersioning2 | _
+        new ArrayList()     | _
+        null                | _
+    }
 }
