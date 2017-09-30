@@ -9,9 +9,33 @@ import spock.lang.Unroll
 @Unroll
 class SemanticVersioningSpec extends Specification {
 
-    def 'バージョンオブジェクトを作成する'() {
+    def '#label バージョンオブジェクトが生成できる'() {
         expect:
-        SemanticVersioning semanticVersioning = new SemanticVersioning(1, 4, 2)
+        new SemanticVersioning(major, minor, patch)
+
+        where:
+        major | minor | patch | label
+        1     | 4     | 2     | 'major:1,minor:4,patch:2 の場合'
+        0     | 4     | 2     | 'major:0,minor:4,patch:2 の場合'
+        1     | 0     | 2     | 'major:1,minor:0,patch:2 の場合'
+        1     | 4     | 0     | 'major:1,minor:4,patch:0 の場合'
+        0     | 0     | 0     | 'major:0,minor:0,patch:0 の場合'
+    }
+
+    def '#label バージョンオブジェクトが生成できず例外が発生する'() {
+        when:
+        new SemanticVersioning(major, minor, patch)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.getMessage() == message
+
+        where:
+        major | minor | patch | label                          || message
+        -1    | 4     | 2     | 'majorが負の整数の場合'                || '引数に負の値は設定できません。 major:-1,minor:4,patch:2'
+        1     | -4    | 2     | 'minorが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:-4,patch:2'
+        1     | 4     | -2    | 'patchが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:4,patch:-2'
+        -1    | -4    | -2    | 'major,minor,patchすべてが負の整数の場合' || '引数に負の値は設定できません。 major:-1,minor:-4,patch:-2'
     }
 
     def 'Majorが#major, Minorが#minor、Patchが#patchのバージョニング文字列表現が#expectedであること'() {
@@ -62,21 +86,5 @@ class SemanticVersioningSpec extends Specification {
         semanticVersioning2 | _
         new ArrayList()     | _
         null                | _
-    }
-
-    def '#label 例外が発生する'() {
-        when:
-        new SemanticVersioning(major, minor, patch)
-
-        then:
-        def e = thrown(IllegalArgumentException)
-        e.getMessage() == message
-
-        where:
-        major | minor | patch | label                          || message
-        -1    | 4     | 2     | 'majorが負の整数の場合'                || '引数に負の値は設定できません。 major:-1,minor:4,patch:2'
-        1     | -4    | 2     | 'minorが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:-4,patch:2'
-        1     | 4     | -2    | 'patchが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:4,patch:-2'
-        -1    | -4    | -2    | 'major,minor,patchすべてが負の整数の場合' || '引数に負の値は設定できません。 major:-1,minor:-4,patch:-2'
     }
 }
