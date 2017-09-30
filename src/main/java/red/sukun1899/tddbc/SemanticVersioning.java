@@ -34,13 +34,7 @@ public class SemanticVersioning {
 
         SemanticVersioning that = (SemanticVersioning) o;
 
-        if (major != that.major) {
-            return false;
-        }
-        if (minor != that.minor) {
-            return false;
-        }
-        return patch == that.patch;
+        return major == that.major && minor == that.minor && patch == that.patch;
     }
 
     @Override
