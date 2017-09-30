@@ -10,6 +10,16 @@ public class SemanticVersioning {
     private final int patch;
 
     public SemanticVersioning(int major, int minor, int patch) {
+        if (major < 0) {
+            throw new IllegalArgumentException("major is invalid: " + major);
+        }
+        if (minor < 0) {
+            throw new IllegalArgumentException("minor is invalid: " + minor);
+        }
+        if (patch < 0) {
+            throw new IllegalArgumentException("patch is invalid: " + patch);
+        }
+
         this.major = major;
         this.minor = minor;
         this.patch = patch;

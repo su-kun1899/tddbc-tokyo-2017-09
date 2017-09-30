@@ -35,17 +35,17 @@ class SemanticVersioningSpec extends Specification {
         semanticVersioning1.equals(semanticVersioning2) == expected
 
         where:
-        semanticVersioning1             | semanticVersioning2             || expected | label
-        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 2) || true     | '等しい'
-        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(2, 0, 9)|| false    | '等しくない'
-        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 3)|| false    | '等しくない'
-        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 0, 2)|| false    | '等しくない'
-        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(99, 4, 2)|| false    | '等しくない'
+        semanticVersioning1             | semanticVersioning2              || expected | label
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 2)  || true     | '等しい'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(2, 0, 9)  || false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 3)  || false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 0, 2)  || false    | '等しくない'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(99, 4, 2) || false    | '等しくない'
     }
 
     def '同一インスタンスは等価であること'() {
         setup:
-        def semanticVersioning1 = new SemanticVersioning(1,4,2)
+        def semanticVersioning1 = new SemanticVersioning(1, 4, 2)
         def semanticVersioning2 = semanticVersioning1
 
         expect:
@@ -53,7 +53,7 @@ class SemanticVersioningSpec extends Specification {
     }
 
     def '異なるクラスで比較した場合は等価でないこと'() {
-        def semanticVersioning1 = new SemanticVersioning(1,4,2)
+        def semanticVersioning1 = new SemanticVersioning(1, 4, 2)
 
         expect:
         !semanticVersioning1.equals(semanticVersioning2)
@@ -62,5 +62,20 @@ class SemanticVersioningSpec extends Specification {
         semanticVersioning2 | _
         new ArrayList()     | _
         null                | _
+    }
+
+    def '#label 例外が発生する'() {
+        when:
+        new SemanticVersioning(major, minor, patch)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.getMessage() == message
+
+        where:
+        major | minor | patch | label           || message
+        -1    | 4     | 2     | 'majorが負の整数の場合' || 'major is invalid: -1'
+        1     | -4    | 2     | 'minorが負の整数の場合' || 'minor is invalid: -4'
+        1     | 4     | -2    | 'patchが負の整数の場合' || 'patch is invalid: -2'
     }
 }
