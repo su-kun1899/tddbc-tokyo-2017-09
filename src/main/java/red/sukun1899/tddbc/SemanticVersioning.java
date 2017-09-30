@@ -10,14 +10,8 @@ public class SemanticVersioning {
     private final int patch;
 
     public SemanticVersioning(int major, int minor, int patch) {
-        if (major < 0) {
-            throw new IllegalArgumentException("major is invalid: " + major);
-        }
-        if (minor < 0) {
-            throw new IllegalArgumentException("minor is invalid: " + minor);
-        }
-        if (patch < 0) {
-            throw new IllegalArgumentException("patch is invalid: " + patch);
+        if (major < 0 || minor < 0 || patch < 0) {
+            throw new IllegalArgumentException(String.format("引数に負の値は設定できません。 major:%d,minor:%d,patch:%d", major, minor, patch));
         }
 
         this.major = major;

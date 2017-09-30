@@ -73,9 +73,10 @@ class SemanticVersioningSpec extends Specification {
         e.getMessage() == message
 
         where:
-        major | minor | patch | label           || message
-        -1    | 4     | 2     | 'majorが負の整数の場合' || 'major is invalid: -1'
-        1     | -4    | 2     | 'minorが負の整数の場合' || 'minor is invalid: -4'
-        1     | 4     | -2    | 'patchが負の整数の場合' || 'patch is invalid: -2'
+        major | minor | patch | label                          || message
+        -1    | 4     | 2     | 'majorが負の整数の場合'                || '引数に負の値は設定できません。 major:-1,minor:4,patch:2'
+        1     | -4    | 2     | 'minorが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:-4,patch:2'
+        1     | 4     | -2    | 'patchが負の整数の場合'                || '引数に負の値は設定できません。 major:1,minor:4,patch:-2'
+        -1    | -4    | -2    | 'major,minor,patchすべてが負の整数の場合' || '引数に負の値は設定できません。 major:-1,minor:-4,patch:-2'
     }
 }
