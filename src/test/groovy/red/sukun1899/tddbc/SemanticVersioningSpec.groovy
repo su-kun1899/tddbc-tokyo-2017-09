@@ -87,4 +87,21 @@ class SemanticVersioningSpec extends Specification {
         new ArrayList()     | _
         null                | _
     }
+
+    def 'パッチのバージョンをアップする'() {
+        given:
+        def semanticVersioning = new SemanticVersioning(major, minor, patch)
+
+        when:
+        semanticVersioning.incrementPatch()
+
+        then:
+        semanticVersioning.getVersion() == expected
+
+        where:
+        major | minor | patch || expected
+        1     | 4     | 2     || '1.4.3'
+        1     | 4     | 0     || '1.4.1'
+        1     | 4     | 9     || '1.4.10'
+    }
 }

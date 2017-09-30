@@ -7,7 +7,7 @@ public class SemanticVersioning {
 
     private final int major;
     private final int minor;
-    private final int patch;
+    private int patch;
 
     public SemanticVersioning(int major, int minor, int patch) {
         if (major < 0 || minor < 0 || patch < 0) {
@@ -43,5 +43,9 @@ public class SemanticVersioning {
         result = 31 * result + minor;
         result = 31 * result + patch;
         return result;
+    }
+
+    public void incrementPatch() {
+        patch++;
     }
 }
