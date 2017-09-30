@@ -18,4 +18,32 @@ public class SemanticVersioning {
     public String getVersion() {
         return String.join(".", String.valueOf(major), String.valueOf(minor), String.valueOf(patch));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SemanticVersioning that = (SemanticVersioning) o;
+
+        if (major != that.major) {
+            return false;
+        }
+        if (minor != that.minor) {
+            return false;
+        }
+        return patch == that.patch;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = major;
+        result = 31 * result + minor;
+        result = 31 * result + patch;
+        return result;
+    }
 }

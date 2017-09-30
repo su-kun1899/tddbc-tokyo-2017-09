@@ -9,7 +9,7 @@ import spock.lang.Unroll
 @Unroll
 class SemanticVersioningSpec extends Specification {
 
-    def "バージョンオブジェクトを作成する"() {
+    def 'バージョンオブジェクトを作成する'() {
         expect:
         SemanticVersioning semanticVersioning = new SemanticVersioning(1, 4, 2)
     }
@@ -28,5 +28,15 @@ class SemanticVersioningSpec extends Specification {
         major | minor | patch || expected
         1     | 4     | 2     || '1.4.2'
         2     | 0     | 9     || '2.0.9'
+    }
+
+    def '#semanticVersioning1.getVersion()と#semanticVersioning2.getVersion()のバージョンオブジェクトが#labelこと'() {
+        expect:
+        semanticVersioning1.equals(semanticVersioning2) == expected
+
+        where:
+        semanticVersioning1             | semanticVersioning2             || expected | label
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 2) || true     | '等しい'
+        new SemanticVersioning(1, 4, 2) | new SemanticVersioning(2, 0, 9)|| false    | '等しくない'
     }
 }
