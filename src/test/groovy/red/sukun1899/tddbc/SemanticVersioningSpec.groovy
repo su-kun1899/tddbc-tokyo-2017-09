@@ -39,4 +39,14 @@ class SemanticVersioningSpec extends Specification {
         new SemanticVersioning(1, 4, 2) | new SemanticVersioning(1, 4, 2) || true     | '等しい'
         new SemanticVersioning(1, 4, 2) | new SemanticVersioning(2, 0, 9)|| false    | '等しくない'
     }
+
+    def '同一インスタンスは等価であること'() {
+        setup:
+        def semanticVersioning1 = new SemanticVersioning(1,4,2)
+        def semanticVersioning2 = semanticVersioning1
+
+        expect:
+        semanticVersioning1.equals(semanticVersioning2)
+    }
+
 }
