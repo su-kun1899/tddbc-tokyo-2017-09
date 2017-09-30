@@ -14,4 +14,8 @@ public class SemanticVersioning {
         this.minor = minor;
         this.patch = patch;
     }
+
+    public String getVersion() {
+        return String.join(".", String.valueOf(major), String.valueOf(minor), String.valueOf(patch));
+    }
 }
